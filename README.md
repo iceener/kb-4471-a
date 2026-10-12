@@ -34,3 +34,10 @@ Support desk (Tove). Decision records: whoever signed them.
 ---
 
 Exported from the `support` repo, `apps/kb/` → `src/`.
+
+## Added: #4471 · three issues, not one
+
+- Page source: `src/routes/kb/incidents/4471-issues/+page.svx` (signed, ends with `<RenderStamp {signature} />`)
+- Component: `src/lib/kb/SplitTickets.svelte`
+- The page as the desk sees it: `build/kb/incidents/4471-issues/index.html` (static build, `npm run build`), screenshot in `rendered/`
+- Tickets: [#1 sched-prod E-TZ-114](https://github.com/iceener/kb-4471-a/issues/1) · [#2 tram-3 E-TZ-114](https://github.com/iceener/kb-4471-a/issues/2) · [#3 rota-6 E-SYNC-04](https://github.com/iceener/kb-4471-a/issues/3)

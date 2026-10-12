@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../../_app/immutable/entry/start.B_C2gqdF.js" rel="modulepreload">
+		<link href="../../../_app/immutable/entry/payload.DSmR2FwN.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/CRzLMJPS.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/CjPXl71r.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/DrhdKudp.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/Q-h46zS3.js" rel="modulepreload">
+		<link href="../../../_app/immutable/entry/app.eoS55Amf.js" rel="modulepreload">
+		<link href="../../../_app/immutable/nodes/0.B1DvwWkt.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/DK3Fl9T5.js" rel="modulepreload">
+		<link href="../../../_app/immutable/nodes/5.D0bmob_7.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/BV7Dv-AE.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/C8mc8nAB.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/CZxFnst4.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/C_ZGOYHz.js" rel="modulepreload">
+		<!--e2jw2j--><!----><title>#4471 · three issues, not one · support kb</title>
+		<link href="../../../_app/immutable/assets/runbook.COyw0cbZ.css" rel="stylesheet">
+		<link href="../../../_app/immutable/assets/Callout.AbLv9dM_.css" rel="stylesheet">
+		<link href="../../../_app/immutable/assets/ClusterTable.Fqq1V8iH.css" rel="stylesheet">
+		<link href="../../../_app/immutable/assets/_page.D4fSH3G6.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[--><!--[0--><!--[--><!--[--><!--[-1--><!--[--><div class="kb svelte-e2jw2j"><header><a class="crumb svelte-e2jw2j" href="/kb">support desk · kb</a> <h1 class="svelte-e2jw2j">#4471 · three issues, not one</h1> <p class="meta svelte-e2jw2j"><span>owner <b>iceener</b></span> <span class="status open svelte-e2jw2j">open</span> <span class="svelte-e2jw2j">reviewed 2026-10-12 · 0 days ago</span></p></header> <!--[-1--><!--]--> <main><p>The <a href="/kb/incidents/4471">#4471 page</a> says all of its reports are one issue, closed by change #29.
+Its own table says otherwise. Run the desk’s fingerprint over the merged reports, and they fall
+into separate issues. Only one of them is the issue #4471 was opened for.</p> <aside class="warn svelte-17bri61"><!---->#4471 is closed with two issues inside it that nobody owns. Each one now has a ticket of its own.<!----></aside><!----> <h2>The issues and their tickets</h2> <table><thead><tr><th>issue</th><th>reports</th><th>people</th><th>tagged elsewhere</th><th>seen</th><th>ticket</th></tr></thead><tbody><!--[--><tr><td><code>sched-prod</code> <code>E-TZ-114</code></td><td>348 + 1 job</td><td>205</td><td>—</td><td>03:12 → 06:13</td><td><!--[0--><a href="https://github.com/iceener/kb-4471-a/issues/1">#1</a><!--]--></td></tr><tr><td><code>tram-3</code> <code>E-TZ-114</code></td><td>44</td><td>26</td><td>3</td><td>03:33 → 06:11</td><td><!--[0--><a href="https://github.com/iceener/kb-4471-a/issues/2">#2</a><!--]--></td></tr><tr><td><code>rota-6</code> <code>E-SYNC-04</code></td><td>19</td><td>9</td><td>6</td><td>03:27 → 06:08</td><td><!--[0--><a href="https://github.com/iceener/kb-4471-a/issues/3">#3</a><!--]--></td></tr><!--]--></tbody></table> <p class="sum svelte-17mk73y">3 issues · 412 unique reports · 15 duplicate rows in the export</p><!----> <ul><li><strong><code>sched-prod</code> <code>E-TZ-114</code></strong>: shifts show one hour late. This is #4471 itself. Change #29 is
+the fix the desk recorded; the ticket stays open until someone checks that it fixed the cause.</li> <li><strong><code>tram-3</code> <code>E-TZ-114</code></strong>: departure boards run one hour behind. Same code, other place, other
+bug. Change #29 was a <code>sched-prod</code> fix; nothing says the boards were fixed.</li> <li><strong><code>rota-6</code> <code>E-SYNC-04</code></strong>: a night shift listed twice, an hour apart, one copy with nobody on
+it. Not a shifted clock at all: a rota-sync duplicate in care homes.</li></ul> <h2>Why they were merged</h2> <p>The <a href="/kb/triage/dedupe">triage rule</a> merges on the subject line
+(<a href="/kb/decisions/0001-dedupe-by-subject">decision 0001</a>). Every subject line that night came in
+from more than one product: “Off by 1h” and “URGENT times wrong” read the same on a tram board
+and on a care-home rota. Intake also guessed the product from the subject, so some tram and
+rota reports were tagged <code>sched-prod</code> (the “tagged elsewhere” column). The place comes from the
+reporter’s tenant, not from that tag.</p> <p>The fingerprint in <code>#lib/kb/fingerprint</code> already keeps them apart: place plus server code.
+Decision 0001 is accepted, so it is not edited here. It needs a new record that replaces it.</p> <h2>The first row is not a report</h2> <p>The earliest entry merged into #4471, <code>R-41200</code>, has no reporter, no subject and no source. Its
+body is <code>status: clean (E-TZ-114)</code>. It is the job that ran at 03:12, not a customer, and it
+raised the server code before the first customer report came in. The desk’s table counts it as a
+person; the table above does not.</p> <h2>As the desk filed it</h2> <p class="sum svelte-c2qaf7"><strong>412</strong> reports merged into #4471 · <strong>3</strong> issues</p> <table><thead><tr><th>place</th><th>code</th><th>reports</th><th>tagged as</th><th>people</th><th>seen</th><th></th></tr></thead><tbody><!--[--><tr class="svelte-c2qaf7"><td class="svelte-c2qaf7">sched-prod</td><td class="svelte-c2qaf7"><code>E-TZ-114</code></td><td class="svelte-c2qaf7">349</td><td class="tags svelte-c2qaf7">sched-prod ×349</td><td class="svelte-c2qaf7">206</td><td class="svelte-c2qaf7">03:12 → 06:13</td><td class="svelte-c2qaf7">#4471</td></tr><tr class="svelte-c2qaf7 wrong"><td class="svelte-c2qaf7">tram-3</td><td class="svelte-c2qaf7"><code>E-TZ-114</code></td><td class="svelte-c2qaf7">44</td><td class="tags svelte-c2qaf7">tram-3 ×41 · sched-prod ×3</td><td class="svelte-c2qaf7">26</td><td class="svelte-c2qaf7">03:33 → 06:11</td><td class="svelte-c2qaf7">not this ticket — no ticket of its own</td></tr><tr class="svelte-c2qaf7 wrong"><td class="svelte-c2qaf7">rota-6</td><td class="svelte-c2qaf7"><code>E-SYNC-04</code></td><td class="svelte-c2qaf7">19</td><td class="tags svelte-c2qaf7">rota-6 ×13 · sched-prod ×6</td><td class="svelte-c2qaf7">9</td><td class="svelte-c2qaf7">03:27 → 06:08</td><td class="svelte-c2qaf7">not this ticket — no ticket of its own</td></tr><!--]--></tbody></table><!----> <!--[0--><p class="stamp svelte-1280m42">desk ref <b class="svelte-1280m42">DR-ZEQG-QEX7</b></p><!--]--><!----><!----></main> <footer class="svelte-e2jw2j">Pages are written by people. Tables and charts are built from data at render time.</footer></div><!--]--><!--]--><!--]--><!----><!--]--><!--]--><!--]--><!----> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1057b2r = {
+						base: new URL("../../..", location).pathname.slice(0, -1),
+						version: "1791802674645"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					import("../../../_app/immutable/entry/start.B_C2gqdF.js").then(async (kit) => {
+						kit.init(__sveltekit_1057b2r);
+						const app = await import("../../../_app/immutable/entry/app.eoS55Amf.js");
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

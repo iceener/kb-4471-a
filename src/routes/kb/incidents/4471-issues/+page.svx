@@ -1,0 +1,65 @@
+---
+layout: runbook
+title: '#4471 · three issues, not one'
+owner: iceener
+status: open
+reviewed: 2026-10-12
+signature: v1.eyJzdWIiOiI2IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTE4MDIzMDQsImV4cCI6MTc5MTg4ODcwNH0.I6WsnalExcgND9KoG5IQD7m2CHWrUT4YDZEawr-ffuY
+---
+
+<script>
+  import ClusterTable from '#lib/kb/ClusterTable.svelte';
+  import SplitTickets from '#lib/kb/SplitTickets.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  const tickets = {
+    'sched-prod:E-TZ-114': 'https://github.com/iceener/kb-4471-a/issues/1',
+    'tram-3:E-TZ-114': 'https://github.com/iceener/kb-4471-a/issues/2',
+    'rota-6:E-SYNC-04': 'https://github.com/iceener/kb-4471-a/issues/3',
+  };
+</script>
+
+The [#4471 page](/kb/incidents/4471) says all of its reports are one issue, closed by change #29.
+Its own table says otherwise. Run the desk's fingerprint over the merged reports, and they fall
+into separate issues. Only one of them is the issue #4471 was opened for.
+
+<Callout kind="warn">
+#4471 is closed with two issues inside it that nobody owns. Each one now has a ticket of its own.
+</Callout>
+
+## The issues and their tickets
+
+<SplitTickets ticket={4471} {tickets} />
+
+- **`sched-prod` `E-TZ-114`**: shifts show one hour late. This is #4471 itself. Change #29 is
+  the fix the desk recorded; the ticket stays open until someone checks that it fixed the cause.
+- **`tram-3` `E-TZ-114`**: departure boards run one hour behind. Same code, other place, other
+  bug. Change #29 was a `sched-prod` fix; nothing says the boards were fixed.
+- **`rota-6` `E-SYNC-04`**: a night shift listed twice, an hour apart, one copy with nobody on
+  it. Not a shifted clock at all: a rota-sync duplicate in care homes.
+
+## Why they were merged
+
+The [triage rule](/kb/triage/dedupe) merges on the subject line
+([decision 0001](/kb/decisions/0001-dedupe-by-subject)). Every subject line that night came in
+from more than one product: "Off by 1h" and "URGENT times wrong" read the same on a tram board
+and on a care-home rota. Intake also guessed the product from the subject, so some tram and
+rota reports were tagged `sched-prod` (the "tagged elsewhere" column). The place comes from the
+reporter's tenant, not from that tag.
+
+The fingerprint in `#lib/kb/fingerprint` already keeps them apart: place plus server code.
+Decision 0001 is accepted, so it is not edited here. It needs a new record that replaces it.
+
+## The first row is not a report
+
+The earliest entry merged into #4471, `R-41200`, has no reporter, no subject and no source. Its
+body is `status: clean (E-TZ-114)`. It is the job that ran at 03:12, not a customer, and it
+raised the server code before the first customer report came in. The desk's table counts it as a
+person; the table above does not.
+
+## As the desk filed it
+
+<ClusterTable ticket={4471} />
+
+<RenderStamp {signature} />
