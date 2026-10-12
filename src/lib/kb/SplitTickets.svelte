@@ -3,8 +3,9 @@
   import { clusterReports, reporterKey, uniqueById, type Report } from '#lib/kb/fingerprint';
   import { placeOf } from '#lib/kb/places';
 
-  // One row per issue found in a merged ticket, with the ticket it now has: fingerprint → link.
-  let { ticket, tickets }: { ticket: number; tickets: Record<string, string> } = $props();
+  // One row per issue found in a merged ticket, with the ticket it now has and how that closed.
+  type Filed = { url: string; outcome: string };
+  let { ticket, tickets }: { ticket: number; tickets: Record<string, Filed> } = $props();
 
   const merged = $derived(uniqueById(reports as Report[]).filter((r) => r.mergedInto === ticket));
   const clusters = $derived(clusterReports(merged, placeOf));
@@ -17,7 +18,7 @@
 
 <table>
   <thead>
-    <tr><th>issue</th><th>reports</th><th>people</th><th>tagged elsewhere</th><th>seen</th><th>ticket</th></tr>
+    <tr><th>issue</th><th>reports</th><th>people</th><th>tagged elsewhere</th><th>seen</th><th>ticket</th><th>outcome</th></tr>
   </thead>
   <tbody>
     {#each clusters as c (c.fingerprint)}
@@ -29,9 +30,10 @@
         <td>{mistagged(c.place, c.reports) || '—'}</td>
         <td>{time(c.firstSeen)} → {time(c.lastSeen)}</td>
         <td>
-          {#if tickets[c.fingerprint]}<a href={tickets[c.fingerprint]}>{label(tickets[c.fingerprint])}</a>
+          {#if tickets[c.fingerprint]}<a href={tickets[c.fingerprint].url}>{label(tickets[c.fingerprint].url)}</a>
           {:else}<span class="none">no ticket yet</span>{/if}
         </td>
+        <td>{tickets[c.fingerprint]?.outcome ?? '—'}</td>
       </tr>
     {/each}
   </tbody>

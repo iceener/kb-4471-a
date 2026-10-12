@@ -2,7 +2,7 @@
 layout: runbook
 title: '#4471 · three issues, not one'
 owner: iceener
-status: open
+status: closed
 reviewed: 2026-10-12
 signature: v1.eyJzdWIiOiI2IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTE4MDIzMDQsImV4cCI6MTc5MTg4ODcwNH0.I6WsnalExcgND9KoG5IQD7m2CHWrUT4YDZEawr-ffuY
 ---
@@ -14,9 +14,9 @@ signature: v1.eyJzdWIiOiI2IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOj
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 
   const tickets = {
-    'sched-prod:E-TZ-114': 'https://github.com/iceener/kb-4471-a/issues/1',
-    'tram-3:E-TZ-114': 'https://github.com/iceener/kb-4471-a/issues/2',
-    'rota-6:E-SYNC-04': 'https://github.com/iceener/kb-4471-a/issues/3',
+    'sched-prod:E-TZ-114': { url: 'https://github.com/iceener/kb-4471-a/issues/1', outcome: 'duplicate of #4471 · change #29' },
+    'tram-3:E-TZ-114': { url: 'https://github.com/iceener/kb-4471-a/issues/2', outcome: "won't fix · boards retired" },
+    'rota-6:E-SYNC-04': { url: 'https://github.com/iceener/kb-4471-a/issues/3', outcome: 'fixed · change #31' },
   };
 </script>
 
@@ -25,19 +25,21 @@ Its own table says otherwise. Run the desk's fingerprint over the merged reports
 into separate issues. Only one of them is the issue #4471 was opened for.
 
 <Callout kind="warn">
-#4471 is closed with two issues inside it that nobody owns. Each one now has a ticket of its own.
+#4471 was closed with two issues inside it that nobody owned. Each one got a ticket of its own,
+and engineering answered both.
 </Callout>
 
 ## The issues and their tickets
 
 <SplitTickets ticket={4471} {tickets} />
 
-- **`sched-prod` `E-TZ-114`**: shifts show one hour late. This is #4471 itself. Change #29 is
-  the fix the desk recorded; the ticket stays open until someone checks that it fixed the cause.
+- **`sched-prod` `E-TZ-114`**: shifts show one hour late. This is #4471 itself, fixed by change
+  #29. Its ticket here is closed as a duplicate of #4471.
 - **`tram-3` `E-TZ-114`**: departure boards run one hour behind. Same code, other place, other
-  bug. Change #29 was a `sched-prod` fix; nothing says the boards were fixed.
+  bug; change #29 did not touch it. Engineering: won't fix, the boards are being retired.
 - **`rota-6` `E-SYNC-04`**: a night shift listed twice, an hour apart, one copy with nobody on
-  it. Not a shifted clock at all: a rota-sync duplicate in care homes.
+  it. Not a shifted clock at all: a rota-sync duplicate in care homes. Engineering: fixed by
+  change #31.
 
 ## Why they were merged
 
